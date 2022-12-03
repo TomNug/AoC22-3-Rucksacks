@@ -16,28 +16,28 @@ class Program {
     string[] lines = System.IO.File.ReadAllLines(@"rucksacks.txt");
 
     List<char> overlappingItems = new List<char>();
-    
-    foreach (string rucksack in lines){
-      HashSet<char> rucksackSetL = new HashSet<char>();
-      HashSet<char> rucksackSetR = new HashSet<char>();
-      int len = rucksack.Length;
-      for (int i=0; i<len/2; i++) {
-        rucksackSetL.Add(rucksack[i]);
-      }
-      for (int i=len/2; i<len; i++) {
-        rucksackSetR.Add(rucksack[i]);
-      }
-
-      rucksackSetL.IntersectWith(rucksackSetR);
-      foreach(char item in rucksackSetL) {
-        overlappingItems.Add(item);
-      }
-    }
-
     int score = 0;
-    foreach(char overlap in overlappingItems) {
-      score += scoreLetter(overlap);
-      //Console.WriteLine("{0} scores {1}", overlap, scoreLetter(overlap));
+    
+    for(int i=0; i<lines.Length; i+=3) {
+      HashSet<char> rucksackSet1 = new HashSet<char>();
+      HashSet<char> rucksackSet2 = new HashSet<char>();
+      HashSet<char> rucksackSet3 = new HashSet<char>();
+      foreach (char item in lines[i]){
+        rucksackSet1.Add(item);
+      }
+      foreach (char item in lines[i+1]){
+        rucksackSet2.Add(item);
+      }
+      foreach (char item in lines[i+2]){
+        rucksackSet3.Add(item);
+      }
+
+      rucksackSet1.IntersectWith(rucksackSet2);
+      rucksackSet1.IntersectWith(rucksackSet3);
+
+      foreach(char c in rucksackSet1) {
+        score += scoreLetter(c);
+      }
     }
     Console.WriteLine(score);
     
